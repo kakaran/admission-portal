@@ -142,6 +142,27 @@ const MyForm = () => {
         TwelthPercentage,
       } = values;
       let formData = new FormData();
+
+      if (!admitCardImage)
+        return NotificationMethod("Admit Card Image is required", "error");
+      if (!studentImage)
+        return NotificationMethod("Student Image is required", "error");
+      if (!proofOfDOB)
+        return NotificationMethod("Proof of DOB is required", "error");
+      if (!cetRollImage)
+        return NotificationMethod("CET Roll Image is required", "error");
+      if (!tenthCopy)
+        return NotificationMethod("10th Copy is required", "error");
+      if (!twelthCopy)
+        return NotificationMethod("12th Copy is required", "error");
+      if (!proofOfReservedCopy)
+        return NotificationMethod(
+          "Proof of Reserved Copy is required",
+          "error"
+        );
+      if (!proofOfAddressCopy)
+        return NotificationMethod("Proof of Address Copy is required", "error");
+
       formData.append("Email", Email);
       formData.append("CETRank", CETRank);
       formData.append("CETRollNo", CETRollNo);
@@ -277,7 +298,9 @@ const MyForm = () => {
                 name=""
                 id="admitcardimage"
                 onChange={(e) => {
-                  setAdmitCardImage(e.target.files[0]);
+                  e.target.files.length
+                    ? setAdmitCardImage(e.target.files[0])
+                    : setAdmitCardImage(null);
                 }}
                 accept="image/jpeg, image/png"
               />
@@ -554,7 +577,9 @@ const MyForm = () => {
                 name=""
                 id="studentimage"
                 onChange={(e) => {
-                  setStudentImage(e.target.files[0]);
+                  e.target.files.length
+                    ? setStudentImage(e.target.files[0])
+                    : setStudentImage(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -578,7 +603,9 @@ const MyForm = () => {
                 name=""
                 id="proofofdob"
                 onChange={(e) => {
-                  setProofOfDOB(e.target.files[0]);
+                  e.target.files.length
+                    ? setProofOfDOB(e.target.files[0])
+                    : setProofOfDOB(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -602,7 +629,9 @@ const MyForm = () => {
                 name=""
                 id="cetrollimage"
                 onChange={(e) => {
-                  setCetRollImage(e.target.files[0]);
+                  e.target.files.length
+                    ? setCetRollImage(e.target.files[0])
+                    : setCetRollImage(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -626,7 +655,9 @@ const MyForm = () => {
                 name=""
                 id="tenthcopy"
                 onChange={(e) => {
-                  setTenthCopy(e.target.files[0]);
+                  e.target.files.length
+                    ? setTenthCopy(e.target.files[0])
+                    : setTenthCopy(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -651,7 +682,9 @@ const MyForm = () => {
                 name=""
                 id="twelthcopy"
                 onChange={(e) => {
-                  setTwelthCopy(e.target.files[0]);
+                  e.target.files.length
+                    ? setTwelthCopy(e.target.files[0])
+                    : setTwelthCopy(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -680,7 +713,9 @@ const MyForm = () => {
                 name=""
                 id="proofOfReservedCopy"
                 onChange={(e) => {
-                  setProofOfReservedCopy(e.target.files[0]);
+                  e.target.files.length
+                    ? setProofOfReservedCopy(e.target.files[0])
+                    : setProofOfReservedCopy(null);
                 }}
                 accept=" image/jpeg"
               />
@@ -709,7 +744,9 @@ const MyForm = () => {
                 name=""
                 id="setProofOfAddressCopy"
                 onChange={(e) => {
-                  setProofOfAddressCopy(e.target.files[0]);
+                  e.target.files.length
+                    ? setProofOfAddressCopy(e.target.files[0])
+                    : setProofOfAddressCopy(null);
                 }}
                 accept=" image/jpeg"
               />
