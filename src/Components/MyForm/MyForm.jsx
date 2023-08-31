@@ -144,24 +144,20 @@ const MyForm = () => {
       let formData = new FormData();
 
       if (!admitCardImage)
-        return NotificationMethod("Admit Card Image is required", "error");
+        return NotificationMethod("Admit Card Image is required", false);
       if (!studentImage)
-        return NotificationMethod("Student Image is required", "error");
+        return NotificationMethod("Student Image is required", false);
       if (!proofOfDOB)
-        return NotificationMethod("Proof of DOB is required", "error");
+        return NotificationMethod("Proof of DOB is required", false);
       if (!cetRollImage)
-        return NotificationMethod("CET Roll Image is required", "error");
-      if (!tenthCopy)
-        return NotificationMethod("10th Copy is required", "error");
+        return NotificationMethod("CET Roll Image is required", false);
+      if (!tenthCopy) return NotificationMethod("10th Copy is required", false);
       if (!twelthCopy)
-        return NotificationMethod("12th Copy is required", "error");
+        return NotificationMethod("12th Copy is required", false);
       if (!proofOfReservedCopy)
-        return NotificationMethod(
-          "Proof of Reserved Copy is required",
-          "error"
-        );
+        return NotificationMethod("Proof of Reserved Copy is required", false);
       if (!proofOfAddressCopy)
-        return NotificationMethod("Proof of Address Copy is required", "error");
+        return NotificationMethod("Proof of Address Copy is required", false);
 
       formData.append("Email", Email);
       formData.append("CETRank", CETRank);
