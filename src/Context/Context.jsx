@@ -95,6 +95,18 @@ const AllProvider = ({ children }) => {
     SignedInStatus();
   }, [render, auth.token, isSignedIn, role]);
 
+  useEffect(() => {
+    const local = localStorage.getItem("auth");
+
+    if (local) {
+      const auth = JSON.parse(local);
+      console.log(auth);
+      if (auth) {
+        setAuth(auth);
+      }
+    }
+  }, []);
+
   return (
     <AllContext.Provider
       value={{

@@ -194,6 +194,7 @@ const MyForm = () => {
       );
       NotificationMethod(data.message, data.status);
     } catch (error) {
+      console.log(error);
       NotificationMethod(
         error.response?.data.message,
         error.response?.data.status
