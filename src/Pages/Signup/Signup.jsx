@@ -63,7 +63,6 @@ const Signup = () => {
   const SignupSubmit = async (values) => {
     try {
       const { FirstName, LastName, Email, Password, PhoneNo } = values;
-      console.log(values);
       const Data = (
         await axios.post(`${BASE_URL}/api/signup`, {
           FName: FirstName,

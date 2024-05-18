@@ -21,7 +21,6 @@ export default function SingleTable() {
     queryKey: ["AdminTable", id],
     queryFn: fetchData,
     select: (data) => {
-      console.log({ data });
       return data.data.FormData.find((item) => item._id === id);
     },
   });

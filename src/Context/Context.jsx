@@ -40,7 +40,6 @@ const AllProvider = ({ children }) => {
   }
 
   const NotificationMethod = async (message, status) => {
-    console.log(message, status);
     if (status) {
       toast.success(`${message}`, {
         position: "top-right",
@@ -100,7 +99,6 @@ const AllProvider = ({ children }) => {
 
     if (local) {
       const auth = JSON.parse(local);
-      console.log(auth);
       if (auth) {
         setAuth(auth);
       }
