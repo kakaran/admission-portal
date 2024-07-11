@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AllContext } from "../Context/Context";
 import LoginForm from "../Components/login-form";
+import { IoMdDownload } from "react-icons/io";
 
 const Login = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -33,9 +34,21 @@ const Login = () => {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <LoginForm onSubmit={UserLogin} />
-    </main>
+    <>
+      <div className="fixed flex justify-end items-center px-5 py-2 w-full">
+        <a
+          className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
+          href="./form.pdf"
+          download={"SGTB&IT_MQ_FORM_Common_Form"}
+        >
+          <IoMdDownload />
+          Form Download
+        </a>
+      </div>
+      <main className="min-h-screen flex items-center justify-center flex-col">
+        <LoginForm onSubmit={UserLogin} />
+      </main>
+    </>
   );
 };
 
