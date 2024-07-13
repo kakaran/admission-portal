@@ -21,7 +21,7 @@ const defaultTheme = createTheme();
 
 const Signup = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const { NotificationMethod } = useContext(AllContext);
+  const { setAuth, NotificationMethod } = useContext(AllContext);
   const navigate = useNavigate();
 
   const schema = z.object({
@@ -73,7 +73,12 @@ const Signup = () => {
         })
       ).data;
       if (Data) {
-        navigate("/");
+        const { token } = Data
+        localStorage.setItem("auth", JSON.stringify(token));
+        setAuth({
+          token,
+        });
+        navigate("/Dashbord");
       }
       NotificationMethod(Data.message, Data.status);
     } catch (error) {

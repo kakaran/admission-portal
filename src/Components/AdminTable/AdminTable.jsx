@@ -20,7 +20,6 @@ export default function AdminTable() {
     queryFn: fetchData,
   });
   const rows = data?.data?.FormData;
-
   if (isError) {
     return <div>{error.response?.data?.message}</div>;
   }
