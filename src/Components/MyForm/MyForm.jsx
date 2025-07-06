@@ -235,7 +235,7 @@ const MyForm = () => {
             Technology
           </Typography>
           <Typography variant="h5" color={"GrayText"} margin={2} align="left">
-            Registration Form for Management Quota Admission 2023-25
+            Registration Form for Management Quota Admission
           </Typography>
           <Box component={"form"} onSubmit={handleSubmit(onSubmit)} noValidate>
             <TextField
