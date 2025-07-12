@@ -36,6 +36,7 @@ const Login = () => {
   return (
     <>
       <div className="fixed flex justify-end items-center px-5 py-2 w-full">
+         <div className="fixed flex flex-col justify-end items-center px-5 py-2 w-full">
         <a
           className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
           href="./form.pdf"
@@ -44,9 +45,7 @@ const Login = () => {
           <IoMdDownload />
           Form Download
         </a>
-      </div>
-       <div className="fixed flex justify-end items-center px-5 py-2 w-full">
-        <a
+            <a
           className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
           href="./Notice.pdf"
           download={"Admission Notice Under MQ 2025-26"}
@@ -54,7 +53,10 @@ const Login = () => {
           <IoMdDownload />
           Admission Notice Under MQ 2025-26
         </a>
+        </div>
       </div>
+      
+       
       <main className="min-h-screen flex items-center justify-center flex-col">
         <LoginForm onSubmit={UserLogin} />
       </main>
