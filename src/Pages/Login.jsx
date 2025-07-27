@@ -53,6 +53,22 @@ const Login = () => {
             <IoMdDownload />
             Admission Notice Under MQ 2025-26
           </a>
+            <a
+            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
+            href="./ActRules.pdf"
+            download={"Management Quota Guidelines 2025-26 - DPCI Act & Rules"}
+          >
+            <IoMdDownload />
+            Management Quota Guidelines 2025-26 - DPCI Act & Rules
+          </a>
+            <a
+            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
+            href="./Act.pdf"
+            download={"Management Quota Guidelines 2025-26 - DPCI Act"}
+          >
+            <IoMdDownload />
+            Management Quota Guidelines 2025-26 - DPCI Act
+          </a>
         </div>
       </div>
 
