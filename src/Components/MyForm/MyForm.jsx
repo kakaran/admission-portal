@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoMdArrowBack } from "react-icons/io";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,7 +81,7 @@ const FileUploadField = ({ label, id, file, onChange }) => (
   </Grid>
 );
 
-const MyForm = () => {
+const MyForm = ({ onBack }) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const { NotificationMethod } = useContext(AllContext);
 
@@ -169,7 +170,8 @@ const MyForm = () => {
       TwelthPercentage: "",
     },
     resolver: zodResolver(schema),
-    mode: "onChange",
+    mode: "onTouched",
+    reValidateMode: "onChange",
   });
 
   const onSubmit = async (values) => {
@@ -282,6 +284,16 @@ const MyForm = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#fdf3f0] to-white py-10">
       <Container component="main" maxWidth="md">
         <CssBaseline />
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex items-center gap-1.5 text-sm font-medium text-[#9a031e] hover:underline mb-3"
+          >
+            <IoMdArrowBack size={16} />
+            Back to options
+          </button>
+        )}
         <Box
           sx={{
             display: "flex",

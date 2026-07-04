@@ -13,6 +13,8 @@ const AllProvider = ({ children }) => {
   const [role, setRole] = useState();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [formStatusCheck, setFormStatucCheck] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [formCheckLoading, setFormCheckLoading] = useState(true);
 
   axios.defaults.headers.common["authtok"] = auth.token;
 
@@ -24,6 +26,8 @@ const AllProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -36,6 +40,7 @@ const AllProvider = ({ children }) => {
       setIsSignedIn(true);
     } catch (error) {
       console.log(error);
+      setAuthLoading(false);
     }
   }
 
@@ -76,6 +81,8 @@ const AllProvider = ({ children }) => {
         error.response.data.message,
         error.response.data.status,
       );
+    } finally {
+      setFormCheckLoading(false);
     }
   };
 
@@ -117,6 +124,8 @@ const AllProvider = ({ children }) => {
         render,
         setRender,
         formStatusCheck,
+        authLoading,
+        formCheckLoading,
       }}
     >
       {children}

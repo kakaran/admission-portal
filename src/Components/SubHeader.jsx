@@ -1,15 +1,28 @@
+import { useState } from "react";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import axios from "axios";
 import xlsx from "json-as-xlsx"
 
 const SubHeader = () => {
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
+
     const excelFileDownload = async () => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/xlsxFormFile`);
+            const params = {};
+            if (fromDate) params.from = fromDate;
+            if (toDate) params.to = toDate;
+
+            const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/xlsxFormFile`, { params });
             if (data) {
                 let filesData = [{
                     sheet: "Students",
                     columns: [
+                        { label: "Signup Name", value: "SignupName" },
+                        { label: "Signup Email", value: "SignupEmail" },
+                        { label: "Phone No", value: "PhoneNo" },
+                        { label: "Submission Method", value: "SubmissionMethod" },
+                        { label: "Choice Made At", value: "SubmissionMethodAt" },
                         { label: "Email", value: "Email" },
                         { label: "CET Rank", value: "CETRank" },
                         { label: "CET Roll No", value: "CETRollNo" },
@@ -46,40 +59,50 @@ const SubHeader = () => {
                         { label: "Proof Of Address Copy", value: "ProofOfAddressCopy" },
                         { label: "Proof Of Reserved Copy", value: "ProofOfReservedCopy" },
                     ],
-                    content: data.map((student) => ({
-                        Email: student.Email,
-                        CETRank: student.CETRank,
-                        CETRollNo: student.CETRollNo,
-                        IPUApplicationNo: student.IPUApplicationNo,
-                        AdmitCardCopy: student.AdmitCardCopy,
-                        NameStudent: student.NameStudent,
-                        StudentContacatNo: student.StudentContacatNo,
-                        StudentAdharCardNo: student.StudentAdharCardNo,
-                        DOB: student.DOB,
-                        FatherName: student.FatherName,
-                        FatherOccupation: student.FatherOccupation,
-                        FatherEmailId: student.FatherEmailId,
-                        MotherName: student.MotherName,
-                        MotherContactNo: student.MotherContactNo,
-                        MotherOccupation: student.MotherOccupation,
-                        MotherEmail: student.MotherEmail,
-                        AdmissionCategory: student.AdmissionCategory,
-                        AreaOfResidence: student.AreaOfResidence,
-                        Gender: student.Gender,
-                        PermanentAddress: student.PermanentAddress,
-                        CorrespondenceAddress: student.CorrespondenceAddress,
-                        Religion: student.Religion,
-                        Nationality: student.Nationality,
-                        TenthPercentage: student.TenthPercentage,
-                        TwelthPercentage: student.TwelthPercentage,
-                        StudentImage: student.StudentImage,
-                        ProofOfDateOfBirthCopy: student.ProofOfDateOfBirthCopy,
-                        CETRollNoCopy: student.CETRollNoCopy,
-                        TenthCopy: student.TenthCopy,
-                        TwelthCopy: student.TwelthCopy,
-                        ProofOfAddressCopy: student.ProofOfAddressCopy,
-                        ProofOfReservedCopy: student.ProofOfReservedCopy,
-                    })),
+                    content: data.map((student) => {
+                        const form = student.FormId || {};
+                        return {
+                            SignupName: `${student.FName || ""} ${student.LName || ""}`.trim(),
+                            SignupEmail: student.Email,
+                            PhoneNo: student.PhoneNo,
+                            SubmissionMethod: student.SubmissionMethod || "Not chosen yet",
+                            SubmissionMethodAt: student.SubmissionMethodAt
+                                ? new Date(student.SubmissionMethodAt).toLocaleString()
+                                : "",
+                            Email: form.Email,
+                            CETRank: form.CETRank,
+                            CETRollNo: form.CETRollNo,
+                            IPUApplicationNo: form.IPUApplicationNo,
+                            AdmitCardCopy: form.AdmitCardCopy,
+                            NameStudent: form.NameStudent,
+                            StudentContacatNo: form.StudentContacatNo,
+                            StudentAdharCardNo: form.StudentAdharCardNo,
+                            DOB: form.DOB,
+                            FatherName: form.FatherName,
+                            FatherOccupation: form.FatherOccupation,
+                            FatherEmailId: form.FatherEmailId,
+                            MotherName: form.MotherName,
+                            MotherContactNo: form.MotherContactNo,
+                            MotherOccupation: form.MotherOccupation,
+                            MotherEmail: form.MotherEmail,
+                            AdmissionCategory: form.AdmissionCategory,
+                            AreaOfResidence: form.AreaOfResidence,
+                            Gender: form.Gender,
+                            PermanentAddress: form.PermanentAddress,
+                            CorrespondenceAddress: form.CorrespondenceAddress,
+                            Religion: form.Religion,
+                            Nationality: form.Nationality,
+                            TenthPercentage: form.TenthPercentage,
+                            TwelthPercentage: form.TwelthPercentage,
+                            StudentImage: form.StudentImage,
+                            ProofOfDateOfBirthCopy: form.ProofOfDateOfBirthCopy,
+                            CETRollNoCopy: form.CETRollNoCopy,
+                            TenthCopy: form.TenthCopy,
+                            TwelthCopy: form.TwelthCopy,
+                            ProofOfAddressCopy: form.ProofOfAddressCopy,
+                            ProofOfReservedCopy: form.ProofOfReservedCopy,
+                        };
+                    }),
                 }]
 
                 let settings = {
@@ -93,12 +116,38 @@ const SubHeader = () => {
         }
     }
     return (
-        <div className=' mb-3 py-1 px-6 w-full flex justify-end border-y-2 border-y-slate-100'>
-            <button
-                onClick={() => excelFileDownload()}
-                className='bg-[#52b788] py-2 px-4 rounded-md flex justify-start items-center gap-2 text-white'>
-                <RiFileExcel2Fill />
-                Excel</button>
+        <div className='max-w-6xl mx-auto px-4 mt-5'>
+            <div className='bg-white border border-[#9a031e]/10 rounded-2xl shadow-sm py-3 px-5 flex flex-wrap justify-end items-center gap-3'>
+                <div className='flex items-center gap-1.5 mr-auto'>
+                    <RiFileExcel2Fill className='text-[#52b788]' size={18} />
+                    <span className='text-sm text-gray-500'>Export applications to Excel</span>
+                </div>
+                <div className='flex items-center gap-1.5'>
+                    <label htmlFor="excel-from-date" className='text-sm text-gray-500'>From</label>
+                    <input
+                        id="excel-from-date"
+                        type="date"
+                        value={fromDate}
+                        onChange={(e) => setFromDate(e.target.value)}
+                        className='border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:border-[#9a031e]'
+                    />
+                </div>
+                <div className='flex items-center gap-1.5'>
+                    <label htmlFor="excel-to-date" className='text-sm text-gray-500'>To</label>
+                    <input
+                        id="excel-to-date"
+                        type="date"
+                        value={toDate}
+                        onChange={(e) => setToDate(e.target.value)}
+                        className='border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:border-[#9a031e]'
+                    />
+                </div>
+                <button
+                    onClick={() => excelFileDownload()}
+                    className='bg-[#52b788] hover:bg-[#469c76] transition-colors py-2 px-4 rounded-md flex justify-center items-center gap-2 text-white text-sm font-medium'>
+                    <RiFileExcel2Fill />
+                    Download Excel</button>
+            </div>
         </div>
     )
 }

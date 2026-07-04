@@ -21,10 +21,10 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex justify-between align-middle p-4 max-w-screen items-center">
+    <div className="flex justify-between align-middle p-4 max-w-screen items-center border-b-2 border-[#9a031e]/20">
       <div className="flex justify-between gap-5 align-middle items-center">
         <img src={image} alt="" width="50px" height="50px" />
-        <p className="text-[#9a031e]">SGTBIMIT</p>
+        <p className="text-[#9a031e] font-bold text-xl">SGTBIMIT</p>
       </div>
       <button className="button-7" onClick={() => logoutSubimit()}>
         Logout
