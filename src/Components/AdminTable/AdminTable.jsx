@@ -138,10 +138,74 @@ export default function AdminTable() {
           <p className="text-sm text-gray-500 mb-2">
             {total} student{total === 1 ? "" : "s"}
           </p>
+
+          <div className="md:hidden space-y-3">
+            {rows.map((row) => {
+              const form = row.FormId;
+              const studentStatus = getStatus(row);
+              const name =
+                form?.NameStudent || `${row.FName || ""} ${row.LName || ""}`.trim();
+              return (
+                <div
+                  key={row._id}
+                  onClick={() => navigate(`/student/${row._id}`)}
+                  className="bg-white border border-[#9a031e]/10 rounded-2xl shadow-sm p-4 cursor-pointer active:bg-[#9a031e]/5"
+                >
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#9a031e]/10 text-[#9a031e] text-xs font-semibold shrink-0">
+                      {initials(name) || "?"}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-gray-800 truncate">{name || "—"}</p>
+                      <p className="text-xs text-gray-400 truncate">
+                        {form?.Email || row.Email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-y-2 text-sm">
+                    <div>
+                      <p className="text-xs text-gray-400">Phone</p>
+                      <p className="text-gray-700">{form?.StudentContacatNo || row.PhoneNo || "—"}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Category</p>
+                      {form?.AdmissionCategory ? (
+                        <span className="bg-[#9a031e]/10 text-[#9a031e] text-xs font-medium px-2.5 py-1 rounded-full">
+                          {form.AdmissionCategory}
+                        </span>
+                      ) : (
+                        <p className="text-gray-700">—</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Method</p>
+                      {row.SubmissionMethod ? (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                          {METHOD_ICONS[row.SubmissionMethod]}
+                          {METHOD_LABELS[row.SubmissionMethod]}
+                        </span>
+                      ) : (
+                        <p className="text-gray-700">—</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Status</p>
+                      <span
+                        className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLES[studentStatus]}`}
+                      >
+                        {studentStatus}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           <TableContainer
             component={Paper}
             elevation={0}
-            className="border border-[#9a031e]/10 !rounded-2xl !shadow-sm"
+            className="hidden md:block border border-[#9a031e]/10 !rounded-2xl !shadow-sm"
           >
             <Table sx={{ minWidth: 650 }} aria-label="student applications table">
               <TableHead>
@@ -166,12 +230,12 @@ export default function AdminTable() {
                   return (
                     <TableRow
                       key={row._id}
-                      hover={!!form}
+                      hover
                       sx={{
-                        cursor: form ? "pointer" : "default",
+                        cursor: "pointer",
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
-                      onClick={() => form && navigate(`/student/${form._id}`)}
+                      onClick={() => navigate(`/student/${row._id}`)}
                     >
                       <TableCell component="th" scope="row">
                         <div className="flex items-center gap-2.5">
