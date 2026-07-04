@@ -74,7 +74,7 @@ const AllProvider = ({ children }) => {
     } catch (error) {
       NotificationMethod(
         error.response.data.message,
-        error.response.data.status
+        error.response.data.status,
       );
     }
   };
@@ -93,6 +93,7 @@ const AllProvider = ({ children }) => {
     }
 
     SignedInStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [render, auth.token, isSignedIn, role]);
 
   useEffect(() => {

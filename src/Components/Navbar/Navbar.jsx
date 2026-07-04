@@ -4,7 +4,7 @@ import image from "../../Assets/image.svg";
 import { AllContext } from "../../Context/Context";
 const Navbar = () => {
   const navigate = useNavigate();
-  const { render, setRender } = useContext(AllContext)
+  const { render, setRender } = useContext(AllContext);
 
   const logoutSubimit = () => {
     try {
@@ -15,11 +15,10 @@ const Navbar = () => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    setRender(!render)
-  }, [])
-
+    setRender(!render);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex justify-between align-middle p-4 max-w-screen items-center">
