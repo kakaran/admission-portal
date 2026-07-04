@@ -1,28 +1,30 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { AllContext } from "../../Context/Context";
-import { useNavigate } from "react-router-dom";
-
-const defaultTheme = createTheme();
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import logo from "../../Assets/image.svg";
 
 const Signup = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const { setAuth, NotificationMethod } = useContext(AllContext);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const schema = z.object({
     FirstName: z.string().nonempty("Name is required."),
@@ -89,29 +91,46 @@ const Signup = () => {
     }
   };
 
+  const fieldSx = {
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+      { borderColor: "#9a031e" },
+    "& label.Mui-focused": { color: "#9a031e" },
+  };
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div className="min-h-screen bg-gradient-to-b from-[#fdf3f0] to-white flex items-center justify-center flex-col px-4 py-10">
+      <div className="flex flex-col items-center mb-6">
+        <img src={logo} alt="SGTBIMIT" width="64" height="64" />
+        <p className="mt-2 text-[#9a031e] font-semibold tracking-wide text-lg">
+          SGTBIMIT
+        </p>
+        <p className="text-gray-500 text-sm">Admission Portal</p>
+      </div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            bgcolor: "#fff",
+            borderRadius: 3,
+            boxShadow: "0 10px 30px rgba(154, 3, 30, 0.08)",
+            px: { xs: 3, sm: 5 },
+            py: 4,
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#9a031e" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{ color: "#9a031e", fontWeight: 600 }}>
             Sign up
           </Typography>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit(SignupSubmit)}
-            sx={{ mt: 3 }}
+            sx={{ mt: 2, width: "100%" }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -125,6 +144,7 @@ const Signup = () => {
                   {...register("FirstName")}
                   error={!!errors.FirstName}
                   helperText={errors?.FirstName?.message}
+                  sx={fieldSx}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -137,6 +157,7 @@ const Signup = () => {
                   {...register("LastName")}
                   error={!!errors.LastName}
                   helperText={errors?.LastName?.message}
+                  sx={fieldSx}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -155,6 +176,7 @@ const Signup = () => {
                       ? "Please enter a number"
                       : errors?.PhoneNo?.message
                   }
+                  sx={fieldSx}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -167,6 +189,7 @@ const Signup = () => {
                   {...register("Email")}
                   error={!!errors.Email}
                   helperText={errors?.Email?.message}
+                  sx={fieldSx}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -174,12 +197,26 @@ const Signup = () => {
                   required
                   fullWidth
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
                   {...register("Password")}
                   error={!!errors.Password}
                   helperText={errors?.Password?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          edge="end"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={fieldSx}
                 />
               </Grid>
             </Grid>
@@ -187,21 +224,33 @@ const Signup = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                bgcolor: "#9a031e",
+                "&:hover": { bgcolor: "#7a0218" },
+                borderRadius: 2,
+                py: 1.2,
+              }}
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <RouterLink
+                to="/"
+                style={{
+                  textDecoration: "underline",
+                  color: "#9a031e",
+                  fontSize: "0.875rem",
+                }}
+              >
+                Already have an account? Sign in
+              </RouterLink>
+            </Box>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </div>
   );
 };
 

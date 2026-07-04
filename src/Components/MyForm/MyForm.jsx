@@ -6,16 +6,79 @@ import {
   Container,
   CssBaseline,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
+import { IoCloudUploadOutline } from "react-icons/io5";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AllContext } from "../../Context/Context";
+import logo from "../../Assets/image.svg";
+
+const fieldSx = {
+  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+    { borderColor: "#9a031e" },
+  "& label.Mui-focused": { color: "#9a031e" },
+};
+
+const SectionHeading = ({ children }) => (
+  <Typography
+    variant="subtitle1"
+    sx={{
+      color: "#9a031e",
+      fontWeight: 700,
+      width: "100%",
+      mt: 3,
+      mb: 1,
+      pb: 1,
+      borderBottom: "2px solid #9a031e1a",
+    }}
+  >
+    {children}
+  </Typography>
+);
+
+const FileUploadField = ({ label, id, file, onChange }) => (
+  <Grid item xs={12} sm={6}>
+    <label
+      htmlFor={id}
+      className="block text-sm font-medium text-gray-700 mb-1"
+    >
+      {label} <span className="text-[#9a031e]">*</span>
+    </label>
+    <label
+      htmlFor={id}
+      className="flex items-center gap-3 border-2 border-dashed border-gray-300 hover:border-[#9a031e] rounded-xl px-3 py-2.5 cursor-pointer transition-colors bg-gray-50 hover:bg-[#9a031e]/5"
+    >
+      {file ? (
+        <img
+          src={URL.createObjectURL(file)}
+          alt={label}
+          className="w-11 h-11 object-cover rounded-md shadow shrink-0"
+        />
+      ) : (
+        <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#9a031e]/10 text-[#9a031e] shrink-0">
+          <IoCloudUploadOutline size={18} />
+        </span>
+      )}
+      <span className="text-sm text-gray-600 truncate">
+        {file ? file.name : "Click to upload (JPEG/PNG)"}
+      </span>
+      <input
+        type="file"
+        id={id}
+        className="hidden"
+        onChange={onChange}
+        accept="image/jpeg, image/png"
+      />
+    </label>
+  </Grid>
+);
 
 const MyForm = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -39,8 +102,6 @@ const MyForm = () => {
     FatherName: z.string().nonempty("Father's Name is required"),
     FatherOccupation: z.string().nonempty("Father's Occupation is required"),
     FatherEmailId: z.string(),
-    // .nonempty("Email is required")
-    // .email("Invalid Email")
     MotherName: z.string().nonempty("Mother's Name is required"),
     MotherContactNo: z
       .number()
@@ -48,8 +109,6 @@ const MyForm = () => {
       .max(9999999999, "Invalid Contact No."),
     MotherOccupation: z.string().nonempty("Mother's Occupation is required"),
     MotherEmail: z.string(),
-    // .nonempty("Email is required")
-    // .email("Invalid Email")
     AdmissionCategory: z.string().nonempty("Admission Category is required"),
     AreaOfResidence: z.string().nonempty("Area of Residence is required"),
     Gender: z.string().nonempty("Gender is required"),
@@ -220,552 +279,486 @@ const MyForm = () => {
   };
 
   return (
-    <main>
-      <Container component="main" maxWidth="lg">
+    <div className="min-h-screen bg-gradient-to-b from-[#fdf3f0] to-white py-10">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            bgcolor: "#fff",
+            borderRadius: 3,
+            boxShadow: "0 10px 30px rgba(154, 3, 30, 0.08)",
+            px: { xs: 3, sm: 5 },
+            py: 4,
           }}
         >
-          <Typography variant="h3" align="center">
+          <img src={logo} alt="SGTBIMIT" width="56" height="56" />
+          <Typography
+            variant="h5"
+            align="center"
+            sx={{ color: "#9a031e", fontWeight: 700, mt: 1 }}
+          >
             Sri Guru Tegh Bahadur Institute of Management and Information
             Technology
           </Typography>
-          <Typography variant="h5" color={"GrayText"} margin={2} align="left">
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            align="center"
+            sx={{ mb: 1 }}
+          >
             Registration Form for Management Quota Admission
           </Typography>
-          <Box component={"form"} onSubmit={handleSubmit(onSubmit)} noValidate>
-            <TextField
-              id="email"
-              label="Email"
-              variant="outlined"
-              {...register("Email")}
-              error={!!errors.Email}
-              helperText={errors.Email?.message}
-              fullWidth
-              autoComplete="email"
-              margin="normal"
-            />
-            <TextField
-              id="CETRank"
-              label="CET Rank"
-              variant="outlined"
-              {...register("CETRank")}
-              error={!!errors.CETRank}
-              helperText={errors.CETRank?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="CETRollNo"
-              label="CET Roll No."
-              variant="outlined"
-              {...register("CETRollNo", { valueAsNumber: true })}
-              error={!!errors.CETRollNo}
-              helperText={errors.CETRollNo?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-            <TextField
-              id="IPUApplicationNo"
-              label="IPU Application No."
-              variant="outlined"
-              {...register("IPUApplicationNo")}
-              error={!!errors.IPUApplicationNo}
-              helperText={errors.IPUApplicationNo?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <label htmlFor="admitcardimage" className="">
-              <Typography variant="p">Admit Card Image: </Typography>
-            </label>
-            <label className="ImageUplaodContainer" htmlFor="admitcardimage">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            sx={{ width: "100%" }}
+          >
+            <SectionHeading>Application Details</SectionHeading>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  {...register("Email")}
+                  error={!!errors.Email}
+                  helperText={errors.Email?.message}
+                  fullWidth
+                  autoComplete="email"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="CETRank"
+                  label="CET Rank"
+                  variant="outlined"
+                  {...register("CETRank")}
+                  error={!!errors.CETRank}
+                  helperText={errors.CETRank?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="CETRollNo"
+                  label="CET Roll No."
+                  variant="outlined"
+                  {...register("CETRollNo", { valueAsNumber: true })}
+                  error={!!errors.CETRollNo}
+                  helperText={errors.CETRollNo?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="IPUApplicationNo"
+                  label="IPU Application No."
+                  variant="outlined"
+                  {...register("IPUApplicationNo")}
+                  error={!!errors.IPUApplicationNo}
+                  helperText={errors.IPUApplicationNo?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+            </Grid>
+
+            <SectionHeading>Student Details</SectionHeading>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="NameStudent"
+                  label="Student's Name"
+                  variant="outlined"
+                  {...register("NameStudent")}
+                  error={!!errors.NameStudent}
+                  helperText={errors.NameStudent?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="StudentContacatNo"
+                  label="Student's Contact No."
+                  variant="outlined"
+                  {...register("StudentContacatNo", { valueAsNumber: true })}
+                  error={!!errors.StudentContacatNo}
+                  helperText={errors.StudentContacatNo?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="StudentAdharCardNo"
+                  label="Student's Aadhaar Card No."
+                  variant="outlined"
+                  {...register("StudentAdharCardNo", { valueAsNumber: true })}
+                  error={!!errors.StudentAdharCardNo}
+                  helperText={errors.StudentAdharCardNo?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="StudentDOB"
+                  label="Student's Date of Birth"
+                  InputLabelProps={{ shrink: true }}
+                  variant="outlined"
+                  {...register("StudentDOB")}
+                  error={!!errors.StudentDOB}
+                  helperText={errors.StudentDOB?.message}
+                  fullWidth
+                  type="date"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth sx={fieldSx}>
+                  <InputLabel id="Gender">Gender</InputLabel>
+                  <Select
+                    labelId="Gender"
+                    id="Gender-Select"
+                    label="Gender"
+                    {...register("Gender")}
+                    error={!!errors.Gender}
+                    fullWidth
+                  >
+                    <MenuItem value={"Male"}>Male</MenuItem>
+                    <MenuItem value={"Female"}>Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <SectionHeading>Parent / Guardian Details</SectionHeading>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="FatherName"
+                  label="Father's Name"
+                  variant="outlined"
+                  {...register("FatherName")}
+                  error={!!errors.FatherName}
+                  helperText={errors.FatherName?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="FatherOccupation"
+                  label="Father's Occupation"
+                  variant="outlined"
+                  {...register("FatherOccupation")}
+                  error={!!errors.FatherOccupation}
+                  helperText={errors.FatherOccupation?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="FatherEmailId"
+                  label="Father's Email"
+                  variant="outlined"
+                  {...register("FatherEmailId")}
+                  error={!!errors.FatherEmailId}
+                  helperText={errors.FatherEmailId?.message}
+                  fullWidth
+                  type="email"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="MotherName"
+                  label="Mother's Name"
+                  variant="outlined"
+                  {...register("MotherName")}
+                  error={!!errors.MotherName}
+                  helperText={errors.MotherName?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="MotherContactNo"
+                  label="Mother's Contact No."
+                  variant="outlined"
+                  {...register("MotherContactNo", { valueAsNumber: true })}
+                  error={!!errors.MotherContactNo}
+                  helperText={errors.MotherContactNo?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="MotherOccupation"
+                  label="Mother's Occupation"
+                  variant="outlined"
+                  {...register("MotherOccupation")}
+                  error={!!errors.MotherOccupation}
+                  helperText={errors.MotherOccupation?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="MotherEmail"
+                  label="Mother's Email"
+                  variant="outlined"
+                  {...register("MotherEmail")}
+                  error={!!errors.MotherEmail}
+                  helperText={errors.MotherEmail?.message}
+                  fullWidth
+                  type="email"
+                  sx={fieldSx}
+                />
+              </Grid>
+            </Grid>
+
+            <SectionHeading>Category & Address</SectionHeading>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth sx={fieldSx}>
+                  <InputLabel id="AdmissionCategory">Category</InputLabel>
+                  <Select
+                    labelId="AdmissionCategory"
+                    id="Admission-Category-Select"
+                    label="Category"
+                    {...register("AdmissionCategory")}
+                    error={!!errors.AdmissionCategory}
+                    fullWidth
+                  >
+                    <MenuItem value={"General"}>General</MenuItem>
+                    <MenuItem value={"General (Out Side Delhi)"}>
+                      General (Out Side Delhi)
+                    </MenuItem>
+                    <MenuItem value={"SC"}>SC</MenuItem>
+                    <MenuItem value={"SC (Out Side Delhi)"}>
+                      SC (Out Side Delhi)
+                    </MenuItem>
+                    <MenuItem value={"ST"}>ST</MenuItem>
+                    <MenuItem value={"OBC"}>OBC</MenuItem>
+                    <MenuItem value={"PH"}>PH</MenuItem>
+                    <MenuItem value={"Other"}>Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth sx={fieldSx}>
+                  <InputLabel id="AreaOfResidence">
+                    Area of Residence
+                  </InputLabel>
+                  <Select
+                    labelId="AreaOfResidence"
+                    id="Area-Of-Residence-Select"
+                    label="Area Of Residence"
+                    {...register("AreaOfResidence")}
+                    error={!!errors.AreaOfResidence}
+                    fullWidth
+                  >
+                    <MenuItem value={"Rural"}>Rural</MenuItem>
+                    <MenuItem value={"Urban"}>Urban</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="Religion"
+                  label="Religion"
+                  variant="outlined"
+                  {...register("Religion")}
+                  error={!!errors.Religion}
+                  helperText={errors.Religion?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="Nationality"
+                  label="Nationality"
+                  variant="outlined"
+                  {...register("Nationality")}
+                  error={!!errors.Nationality}
+                  helperText={errors.Nationality?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="PermanentAddress"
+                  label="Permanent Address"
+                  variant="outlined"
+                  {...register("PermanentAddress")}
+                  error={!!errors.PermanentAddress}
+                  helperText={errors.PermanentAddress?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  id="CorrespondenceAddress"
+                  label="Correspondence Address"
+                  variant="outlined"
+                  {...register("CorrespondenceAddress")}
+                  error={!!errors.CorrespondenceAddress}
+                  helperText={errors.CorrespondenceAddress?.message}
+                  fullWidth
+                  type="text"
+                  sx={fieldSx}
+                />
+              </Grid>
+            </Grid>
+
+            <SectionHeading>Academic Details</SectionHeading>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="TenthPercentage"
+                  label="10th Percentage"
+                  variant="outlined"
+                  {...register("TenthPercentage", { valueAsNumber: true })}
+                  error={!!errors.TenthPercentage}
+                  helperText={errors.TenthPercentage?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="TwelthPercentage"
+                  label="12th Percentage"
+                  variant="outlined"
+                  {...register("TwelthPercentage", { valueAsNumber: true })}
+                  error={!!errors.TwelthPercentage}
+                  helperText={errors.TwelthPercentage?.message}
+                  fullWidth
+                  type="number"
+                  sx={fieldSx}
+                />
+              </Grid>
+            </Grid>
+
+            <SectionHeading>Document Uploads</SectionHeading>
+            <Grid container spacing={2}>
+              <FileUploadField
+                label="Admit Card Image"
                 id="admitcardimage"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setAdmitCardImage(e.target.files[0])
-                    : setAdmitCardImage(null);
-                }}
-                accept="image/jpeg, image/png"
+                file={admitCardImage}
+                onChange={(e) =>
+                  setAdmitCardImage(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {admitCardImage && (
-              <img
-                className="w-1/2 rounded-md shadow-lg"
-                src={URL.createObjectURL(admitCardImage)}
-                alt="admitcardimage"
-              />
-            )}
-
-            <TextField
-              id="NameStudent"
-              label="Student's Name"
-              variant="outlined"
-              {...register("NameStudent")}
-              error={!!errors.NameStudent}
-              helperText={errors.NameStudent?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="StudentContacatNo"
-              label="Student's Contact No."
-              variant="outlined"
-              {...register("StudentContacatNo", { valueAsNumber: true })}
-              error={!!errors.StudentContacatNo}
-              helperText={errors.StudentContacatNo?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-            <TextField
-              id="StudentAdharCardNo"
-              label="Student's Aadhaar Card No."
-              variant="outlined"
-              {...register("StudentAdharCardNo", { valueAsNumber: true })}
-              error={!!errors.StudentAdharCardNo}
-              helperText={errors.StudentAdharCardNo?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-
-            <label component="legend" htmlFor="StudentDOB">
-              Student's Date of Birth
-            </label>
-            <TextField
-              id="StudentDOB"
-              variant="outlined"
-              {...register("StudentDOB")}
-              error={!!errors.StudentDOB}
-              helperText={errors.StudentDOB?.message}
-              fullWidth
-              type="date"
-              margin="normal"
-            />
-            <TextField
-              id="FatherName"
-              label="Father's Name"
-              variant="outlined"
-              {...register("FatherName")}
-              error={!!errors.FatherName}
-              helperText={errors.FatherName?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-
-            <TextField
-              id="FatherOccupation"
-              label="Father's Occupation"
-              variant="outlined"
-              {...register("FatherOccupation")}
-              error={!!errors.FatherOccupation}
-              helperText={errors.FatherOccupation?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="FatherEmailId"
-              label="Father's Email"
-              variant="outlined"
-              {...register("FatherEmailId")}
-              error={!!errors.FatherEmailId}
-              helperText={errors.FatherEmailId?.message}
-              fullWidth
-              type="email"
-              margin="normal"
-            />
-            <TextField
-              id="MotherName"
-              label="Mother's Name"
-              variant="outlined"
-              {...register("MotherName")}
-              error={!!errors.MotherName}
-              helperText={errors.MotherName?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="MotherContactNo"
-              label="Mother's Contact No."
-              variant="outlined"
-              {...register("MotherContactNo", { valueAsNumber: true })}
-              error={!!errors.MotherContactNo}
-              helperText={errors.MotherContactNo?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-            <TextField
-              id="MotherOccupation"
-              label="Mother's Occupation"
-              variant="outlined"
-              {...register("MotherOccupation")}
-              error={!!errors.MotherOccupation}
-              helperText={errors.MotherOccupation?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="MotherEmail"
-              label="Mother's Email"
-              variant="outlined"
-              {...register("MotherEmail")}
-              error={!!errors.MotherEmail}
-              helperText={errors.MotherEmail?.message}
-              fullWidth
-              type="email"
-              margin="normal"
-            />
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="AdmissionCategory">Category</InputLabel>
-              <Select
-                labelId="AdmissionCategory"
-                id="Admission-Category-Select"
-                label="Category"
-                {...register("AdmissionCategory")}
-                error={!!errors.AdmissionCategory}
-                helperText={errors.AdmissionCategory?.message}
-                fullWidth
-                type="text"
-                margin="normal"
-              >
-                <MenuItem value={"General"}>General</MenuItem>
-                <MenuItem value={"General (Out Side Delhi)"}>
-                  General (Out Side Delhi)
-                </MenuItem>
-                <MenuItem value={"SC"}>SC</MenuItem>
-                <MenuItem value={"SC (Out Side Delhi)"}>
-                  SC (Out Side Delhi)
-                </MenuItem>
-                <MenuItem value={"ST"}>ST</MenuItem>
-                <MenuItem value={"OBC"}>OBC</MenuItem>
-                <MenuItem value={"PH"}>PH</MenuItem>
-                <MenuItem value={"Other"}>Other</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="AreaOfResidence">Area of Residence</InputLabel>
-              <Select
-                labelId="AreaOfResidence"
-                id="Area-Of-Residence-Select"
-                label="Area Of Residence"
-                {...register("AreaOfResidence")}
-                error={!!errors.AreaOfResidence}
-                helperText={errors.AreaOfResidence?.message}
-                fullWidth
-                type="text"
-                margin="normal"
-              >
-                <MenuItem value={"Rural"}>Rural</MenuItem>
-                <MenuItem value={"Urban"}>Urban</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="Gender">Gender</InputLabel>
-              <Select
-                labelId="Gender"
-                id="Area-Of-Residence-Select"
-                label="Gender"
-                {...register("Gender")}
-                error={!!errors.Gender}
-                helperText={errors.Gender?.message}
-                fullWidth
-                type="text"
-                margin="normal"
-              >
-                <MenuItem value={"Male"}>Male</MenuItem>
-                <MenuItem value={"Female"}>Female</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              id="PermanentAddress"
-              label="Permanent Address"
-              variant="outlined"
-              {...register("PermanentAddress")}
-              error={!!errors.PermanentAddress}
-              helperText={errors.PermanentAddress?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="CorrespondenceAddress"
-              label="Correspondence Address"
-              variant="outlined"
-              {...register("CorrespondenceAddress")}
-              error={!!errors.CorrespondenceAddress}
-              helperText={errors.CorrespondenceAddress?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="Religion"
-              label="Religion"
-              variant="outlined"
-              {...register("Religion")}
-              error={!!errors.Religion}
-              helperText={errors.Religion?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="Nationality"
-              label="Nationality"
-              variant="outlined"
-              {...register("Nationality")}
-              error={!!errors.Nationality}
-              helperText={errors.Nationality?.message}
-              fullWidth
-              type="text"
-              margin="normal"
-            />
-            <TextField
-              id="TenthPercentage"
-              label="TenthPercentage"
-              variant="outlined"
-              {...register("TenthPercentage", { valueAsNumber: true })}
-              error={!!errors.TenthPercentage}
-              helperText={errors.TenthPercentage?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-            <TextField
-              id="TwelthPercentage"
-              label="TwelthPercentage"
-              variant="outlined"
-              {...register("TwelthPercentage", { valueAsNumber: true })}
-              error={!!errors.TwelthPercentage}
-              helperText={errors.TwelthPercentage?.message}
-              fullWidth
-              type="number"
-              margin="normal"
-            />
-            <label htmlFor="studentimage" className="">
-              <Typography variant="p">Student Image: </Typography>
-            </label>
-            <label className="ImageUplaodContainer" htmlFor="studentimage">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="Student Image"
                 id="studentimage"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setStudentImage(e.target.files[0])
-                    : setStudentImage(null);
-                }}
-                accept=" image/jpeg"
+                file={studentImage}
+                onChange={(e) =>
+                  setStudentImage(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {studentImage && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(studentImage)}
-                alt="studentimage"
-              />
-            )}
-            <label htmlFor="proofofdob" className="">
-              <Typography variant="p">Proof of DOB: </Typography>
-            </label>
-            <label className="ImageUplaodContainer" htmlFor="proofofdob">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="Proof of DOB"
                 id="proofofdob"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setProofOfDOB(e.target.files[0])
-                    : setProofOfDOB(null);
-                }}
-                accept=" image/jpeg"
+                file={proofOfDOB}
+                onChange={(e) =>
+                  setProofOfDOB(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {proofOfDOB && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(proofOfDOB)}
-                alt="proofofdob"
-              />
-            )}
-            <label htmlFor="cetrollimage" className="">
-              <Typography variant="p">CET Roll Image: </Typography>
-            </label>
-            <label className="ImageUplaodContainer" htmlFor="cetrollimage">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="CET Roll Image"
                 id="cetrollimage"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setCetRollImage(e.target.files[0])
-                    : setCetRollImage(null);
-                }}
-                accept=" image/jpeg"
+                file={cetRollImage}
+                onChange={(e) =>
+                  setCetRollImage(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {cetRollImage && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(cetRollImage)}
-                alt="cetrollimage"
-              />
-            )}
-            <label htmlFor="tenthcopy" className="">
-              <Typography variant="p">10th Copy: </Typography>
-            </label>
-            <label className="ImageUplaodContainer" htmlFor="tenthcopy">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="10th Copy"
                 id="tenthcopy"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setTenthCopy(e.target.files[0])
-                    : setTenthCopy(null);
-                }}
-                accept=" image/jpeg"
+                file={tenthCopy}
+                onChange={(e) =>
+                  setTenthCopy(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {tenthCopy && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(tenthCopy)}
-                alt="tenthcopy"
-              />
-            )}
-            <label htmlFor="twelthcopy" className="">
-              <Typography variant="p">12th Copy: </Typography>
-            </label>
-
-            <label className="ImageUplaodContainer" htmlFor="twelthcopy">
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="12th Copy"
                 id="twelthcopy"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setTwelthCopy(e.target.files[0])
-                    : setTwelthCopy(null);
-                }}
-                accept=" image/jpeg"
+                file={twelthCopy}
+                onChange={(e) =>
+                  setTwelthCopy(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {twelthCopy && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(twelthCopy)}
-                alt="twelthcopy"
-              />
-            )}
-
-            <label htmlFor="proofOfReservedCopy" className="">
-              <Typography variant="p">Proof of Reserved Copy: </Typography>
-            </label>
-
-            <label
-              className="ImageUplaodContainer"
-              htmlFor="proofOfReservedCopy"
-            >
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="Proof of Reserved Copy"
                 id="proofOfReservedCopy"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setProofOfReservedCopy(e.target.files[0])
-                    : setProofOfReservedCopy(null);
-                }}
-                accept=" image/jpeg"
+                file={proofOfReservedCopy}
+                onChange={(e) =>
+                  setProofOfReservedCopy(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {proofOfReservedCopy && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(proofOfReservedCopy)}
-                alt="twelthcopy"
-              />
-            )}
-
-            <label htmlFor="setProofOfAddressCopy" className="">
-              <Typography variant="p">Proof of Address Copy: </Typography>
-            </label>
-
-            <label
-              className="ImageUplaodContainer"
-              htmlFor="setProofOfAddressCopy"
-            >
-              <div>
-                <span>+</span> Upload
-              </div>
-              <input
-                type="file"
-                name=""
+              <FileUploadField
+                label="Proof of Address Copy"
                 id="setProofOfAddressCopy"
-                onChange={(e) => {
-                  e.target.files.length
-                    ? setProofOfAddressCopy(e.target.files[0])
-                    : setProofOfAddressCopy(null);
-                }}
-                accept=" image/jpeg"
+                file={proofOfAddressCopy}
+                onChange={(e) =>
+                  setProofOfAddressCopy(e.target.files.length ? e.target.files[0] : null)
+                }
               />
-            </label>
-            {proofOfAddressCopy && (
-              <img
-                className="w-1/2 rounded-md shadow-lg mb-5"
-                src={URL.createObjectURL(proofOfAddressCopy)}
-                alt="twelthcopy"
-              />
-            )}
+            </Grid>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 4,
+                mb: 2,
+                bgcolor: "#9a031e",
+                "&:hover": { bgcolor: "#7a0218" },
+                borderRadius: 2,
+                py: 1.2,
+              }}
             >
               Submit
             </Button>
           </Box>
         </Box>
       </Container>
-    </main>
+    </div>
   );
 };
 

@@ -4,6 +4,25 @@ import { useNavigate } from "react-router-dom";
 import { AllContext } from "../Context/Context";
 import LoginForm from "../Components/login-form";
 import { IoMdDownload } from "react-icons/io";
+import logo from "../Assets/image.svg";
+
+const notices = [
+  {
+    label: "Admission Notice Under MQ 2025-26",
+    href: "./Notice.pdf",
+    download: "Admission Notice Under MQ 2025-26",
+  },
+  {
+    label: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
+    href: "./ActRules.pdf",
+    download: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
+  },
+  {
+    label: "Management Quota Guidelines 2025-26 - DPCI Act",
+    href: "./Act.pdf",
+    download: "Management Quota Guidelines 2025-26 - DPCI Act",
+  },
+];
 
 const Login = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -34,49 +53,40 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="fixed flex justify-end items-center px-5 py-2 w-full">
-        <div className="flex flex-col gap-3 justify-end px-5 py-2">
-          <a
-            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2 justify-center"
-            href="./form.pdf"
-            download={"SGTB&IT_MQ_FORM_Common_Form"}
-          >
-            <IoMdDownload />
-            Form Download
-          </a>
-          <a
-            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
-            href="./Notice.pdf"
-            download={"Admission Notice Under MQ 2025-26"}
-          >
-            <IoMdDownload />
-            Admission Notice Under MQ 2025-26
-          </a>
+    <div className="min-h-screen bg-gradient-to-b from-[#fdf3f0] to-white">
+      {/* Notices - horizontal scrollable strip */}
+      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur border-b border-[#9a031e]/10 relative">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide px-4 py-3 max-w-6xl mx-auto scroll-smooth snap-x">
+          {notices.map((notice) => (
             <a
-            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
-            href="./ActRules.pdf"
-            download={"Management Quota Guidelines 2025-26 - DPCI Act & Rules"}
-          >
-            <IoMdDownload />
-            Management Quota Guidelines 2025-26 - DPCI Act & Rules
-          </a>
-            <a
-            className="border rounded-full px-4 py-2 bg-[#3498db] text-white capitalize flex items-center gap-2"
-            href="./Act.pdf"
-            download={"Management Quota Guidelines 2025-26 - DPCI Act"}
-          >
-            <IoMdDownload />
-            Management Quota Guidelines 2025-26 - DPCI Act
-          </a>
+              key={notice.download}
+              className="group shrink-0 snap-start whitespace-nowrap flex items-center gap-2 bg-[#9a031e] text-white rounded-full pl-2.5 pr-4 py-1.5 text-sm font-medium shadow-sm shadow-[#9a031e]/20 hover:bg-[#7a0218] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              href={notice.href}
+              download={notice.download}
+            >
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/15 group-hover:bg-white/25 shrink-0">
+                <IoMdDownload className="shrink-0" size={13} />
+              </span>
+              {notice.label}
+            </a>
+          ))}
         </div>
+        {/* fade hint that the strip scrolls when items overflow */}
+        <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white/90 to-transparent" />
       </div>
 
-
-      <main className="min-h-screen flex items-center justify-center flex-col">
+      {/* Login */}
+      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center flex-col px-4 py-10">
+        <div className="flex flex-col items-center mb-6">
+          <img src={logo} alt="SGTBIMIT" width="64" height="64" />
+          <p className="mt-2 text-[#9a031e] font-semibold tracking-wide text-lg">
+            SGTBIMIT
+          </p>
+          <p className="text-gray-500 text-sm">Admission Portal</p>
+        </div>
         <LoginForm onSubmit={UserLogin} />
       </main>
-    </>
+    </div>
   );
 };
 
