@@ -79,6 +79,7 @@ const AllProvider = ({ children }) => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     // setRender(!render);
     if (isSignedIn) {

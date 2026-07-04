@@ -15,6 +15,7 @@ const Navbar = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setRender(!render)
   }, [])
