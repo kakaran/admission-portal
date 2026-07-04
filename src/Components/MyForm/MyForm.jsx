@@ -44,13 +44,18 @@ const SectionHeading = ({ children }) => (
   </Typography>
 );
 
-const FileUploadField = ({ label, id, file, onChange }) => (
+const FileUploadField = ({ label, id, file, onChange, required = true }) => (
   <Grid item xs={12} sm={6}>
     <label
       htmlFor={id}
       className="block text-sm font-medium text-gray-700 mb-1"
     >
-      {label} <span className="text-[#9a031e]">*</span>
+      {label}{" "}
+      {required ? (
+        <span className="text-[#9a031e]">*</span>
+      ) : (
+        <span className="text-gray-400 text-xs">(Optional)</span>
+      )}
     </label>
     <label
       htmlFor={id}
@@ -87,7 +92,7 @@ const MyForm = ({ onBack }) => {
 
   const schema = z.object({
     Email: z.string().nonempty("Email is required").email("Invalid Email"),
-    CETRank: z.string().nonempty("CET Rank is required"),
+    CETRank: z.string().nonempty("CET/CUT Rank is required"),
     CETRollNo: z.number(),
     IPUApplicationNo: z.string().nonempty("IPU Application No. is required"),
     NameStudent: z.string().nonempty("Name is required"),
@@ -211,12 +216,10 @@ const MyForm = ({ onBack }) => {
       if (!proofOfDOB)
         return NotificationMethod("Proof of DOB is required", false);
       if (!cetRollImage)
-        return NotificationMethod("CET Roll Image is required", false);
+        return NotificationMethod("CET/CUT Roll Image is required", false);
       if (!tenthCopy) return NotificationMethod("10th Copy is required", false);
       if (!twelthCopy)
         return NotificationMethod("12th Copy is required", false);
-      if (!proofOfReservedCopy)
-        return NotificationMethod("Proof of Reserved Copy is required", false);
       if (!proofOfAddressCopy)
         return NotificationMethod("Proof of Address Copy is required", false);
 
@@ -250,11 +253,13 @@ const MyForm = ({ onBack }) => {
       formData.append("TenthCopy", tenthCopy, tenthCopy.name);
       formData.append("TwelthCopy", twelthCopy, twelthCopy.name);
       formData.append("StudentImage", studentImage, studentImage.name);
-      formData.append(
-        "ProofOfReservedCopy",
-        proofOfReservedCopy,
-        proofOfReservedCopy.name
-      );
+      if (proofOfReservedCopy) {
+        formData.append(
+          "ProofOfReservedCopy",
+          proofOfReservedCopy,
+          proofOfReservedCopy.name
+        );
+      }
       formData.append(
         "ProofOfAddressCopy",
         proofOfAddressCopy,
@@ -348,7 +353,7 @@ const MyForm = ({ onBack }) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   id="CETRank"
-                  label="CET Rank"
+                  label="CET/CUT Rank"
                   variant="outlined"
                   {...register("CETRank")}
                   error={!!errors.CETRank}
@@ -361,7 +366,7 @@ const MyForm = ({ onBack }) => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   id="CETRollNo"
-                  label="CET Roll No."
+                  label="CET/CUT Roll No."
                   variant="outlined"
                   {...register("CETRollNo", { valueAsNumber: true })}
                   error={!!errors.CETRollNo}
@@ -711,7 +716,7 @@ const MyForm = ({ onBack }) => {
                 }
               />
               <FileUploadField
-                label="CET Roll Image"
+                label="CET/CUT Roll Image"
                 id="cetrollimage"
                 file={cetRollImage}
                 onChange={(e) =>
@@ -738,6 +743,7 @@ const MyForm = ({ onBack }) => {
                 label="Proof of Reserved Copy"
                 id="proofOfReservedCopy"
                 file={proofOfReservedCopy}
+                required={false}
                 onChange={(e) =>
                   setProofOfReservedCopy(e.target.files.length ? e.target.files[0] : null)
                 }

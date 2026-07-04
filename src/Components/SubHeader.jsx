@@ -21,11 +21,13 @@ const SubHeader = () => {
                         { label: "Signup Name", value: "SignupName" },
                         { label: "Signup Email", value: "SignupEmail" },
                         { label: "Phone No", value: "PhoneNo" },
+                        { label: "Joining Date", value: "JoiningDate" },
                         { label: "Submission Method", value: "SubmissionMethod" },
-                        { label: "Choice Made At", value: "SubmissionMethodAt" },
+                        { label: "Download Time", value: "SubmissionMethodAt" },
+                        { label: "Form Submitted At", value: "FormSubmittedAt" },
                         { label: "Email", value: "Email" },
-                        { label: "CET Rank", value: "CETRank" },
-                        { label: "CET Roll No", value: "CETRollNo" },
+                        { label: "CET/CUT Rank", value: "CETRank" },
+                        { label: "CET/CUT Roll No", value: "CETRollNo" },
                         { label: "IPU Application No", value: "IPUApplicationNo" },
                         { label: "Admit Card Copy", value: "AdmitCardCopy" },
                         { label: "Name", value: "NameStudent" },
@@ -53,7 +55,7 @@ const SubHeader = () => {
                             label: "Proof Of Date Of Birth Copy",
                             value: "ProofOfDateOfBirthCopy",
                         },
-                        { label: "CET Roll No Copy", value: "CETRollNoCopy" },
+                        { label: "CET/CUT Roll No Copy", value: "CETRollNoCopy" },
                         { label: "Tenth Copy", value: "TenthCopy" },
                         { label: "Twelfth Copy", value: "TwelthCopy" },
                         { label: "Proof Of Address Copy", value: "ProofOfAddressCopy" },
@@ -65,7 +67,13 @@ const SubHeader = () => {
                             SignupName: `${student.FName || ""} ${student.LName || ""}`.trim(),
                             SignupEmail: student.Email,
                             PhoneNo: student.PhoneNo,
+                            JoiningDate: student.createdAt
+                                ? new Date(student.createdAt).toLocaleDateString()
+                                : "",
                             SubmissionMethod: student.SubmissionMethod || "Not chosen yet",
+                            FormSubmittedAt: form.createdAt
+                                ? new Date(form.createdAt).toLocaleString()
+                                : "",
                             SubmissionMethodAt: student.SubmissionMethodAt
                                 ? new Date(student.SubmissionMethodAt).toLocaleString()
                                 : "",

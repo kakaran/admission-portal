@@ -162,8 +162,8 @@ export default function SingleTable() {
                 </SectionCard>
 
                 <SectionCard title="Application Details">
-                  <DetailRow label="CET Rank" value={data?.CETRank} />
-                  <DetailRow label="CET Roll No." value={data?.CETRollNo} />
+                  <DetailRow label="CET/CUT Rank" value={data?.CETRank} />
+                  <DetailRow label="CET/CUT Roll No." value={data?.CETRollNo} />
                   <DetailRow
                     label="IPU Application No."
                     value={data?.IPUApplicationNo}
@@ -223,7 +223,7 @@ export default function SingleTable() {
                       src={data?.ProofOfDateOfBirthCopy}
                     />
                     <DocumentCard
-                      label="CET Roll No. Copy"
+                      label="CET/CUT Roll No. Copy"
                       src={data?.CETRollNoCopy}
                     />
                     <DocumentCard label="10th Marksheet" src={data?.TenthCopy} />
