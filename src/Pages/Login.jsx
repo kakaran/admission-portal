@@ -8,20 +8,20 @@ import logo from "../Assets/image.svg";
 
 const notices = [
   {
-    label: "Admission Notice Under MQ 2025-26",
+    label: "Admission Notice Under MQ 2026-27",
     href: "./Notice.pdf",
-    download: "Admission Notice Under MQ 2025-26",
+    download: "Admission Notice Under MQ 2026-27",
   },
-  {
-    label: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
-    href: "./ActRules.pdf",
-    download: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
-  },
-  {
-    label: "Management Quota Guidelines 2025-26 - DPCI Act",
-    href: "./Act.pdf",
-    download: "Management Quota Guidelines 2025-26 - DPCI Act",
-  },
+  // {
+  //   label: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
+  //   href: "./ActRules.pdf",
+  //   download: "Management Quota Guidelines 2025-26 - DPCI Act & Rules",
+  // },
+  // {
+  //   label: "Management Quota Guidelines 2025-26 - DPCI Act",
+  //   href: "./Act.pdf",
+  //   download: "Management Quota Guidelines 2025-26 - DPCI Act",
+  // },
 ];
 
 const Login = () => {
@@ -59,7 +59,7 @@ const Login = () => {
     } catch (error) {
       NotificationMethod(
         error.response.data.message,
-        error.response.data.status
+        error.response.data.status,
       );
     }
   };
@@ -70,9 +70,17 @@ const Login = () => {
       <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-[#9a031e]/10">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <img src={logo} alt="SGTBIMIT" width="36" height="36" className="shrink-0" />
+            <img
+              src={logo}
+              alt="SGTBIMIT"
+              width="36"
+              height="36"
+              className="shrink-0"
+            />
             <div className="leading-tight min-w-0">
-              <p className="text-[#9a031e] font-semibold text-sm truncate">SGTBIMIT</p>
+              <p className="text-[#9a031e] font-semibold text-sm truncate">
+                SGTBIMIT
+              </p>
               <p className="text-gray-400 text-xs truncate">Admission Portal</p>
             </div>
           </div>
